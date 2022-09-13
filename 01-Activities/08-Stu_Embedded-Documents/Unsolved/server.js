@@ -23,8 +23,10 @@ mongodb.connect(
       console.log(res);
     });
 
+    console.log('Database has connected')
+
     app.listen(port, () => {
-      console.log(`Example app listening at http://localhost:${port}`);
+      console.log(`app listening at http://localhost:${port}`);
     });
   }
 );
@@ -60,17 +62,19 @@ const data = [
 app.use(express.json());
 
 app.get('/price-less-than-10', (req, res) => {
+
   db.collection('authorList')
-    .find({ data: { $lt: 10 } })
-    .toArray((err, results) => {
-      if (err) throw err;
-      res.send(results);
-    });
+  .find({ "information.price": { $lt: 10 } })
+  .toArray((err, results) => {
+    if (err) throw err;
+    res.send(results);
+  });
+
 });
 
 app.get('/featured-authors', (req, res) => {
   db.collection('authorList')
-    .find({ featured: true })
+    .find({ "authors.featured": true})
     .toArray((err, results) => {
       if (err) throw err;
       res.send(results);
